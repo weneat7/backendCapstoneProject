@@ -23,7 +23,7 @@ public class FakeStoreProductService implements ProductService{
        FakeStoreProductDto productDto =  restTemplate.getForObject(
                                     "https://fakestoreapi.com/products/"+id,
                                             FakeStoreProductDto.class);
-
+        int a = 10;
        return convertFakeStoreProduct(productDto);
     }
 
