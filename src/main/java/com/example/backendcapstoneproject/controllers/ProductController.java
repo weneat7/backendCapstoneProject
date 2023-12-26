@@ -20,7 +20,8 @@ public class ProductController {
 
     @GetMapping("/all")
     public List<Product> getAllProducts(){
-        return new ArrayList<>();
+        return  new ArrayList<>();
+        //        return fakeStoreProductService.getAllProducts();
     }
 
     @GetMapping("/{id}")
