@@ -6,5 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FakeStoreCategoryDto{
-    String name;
+   private String name;
+
+   FakeStoreCategoryDto(String name){
+      this.name = name;
+   }
 }

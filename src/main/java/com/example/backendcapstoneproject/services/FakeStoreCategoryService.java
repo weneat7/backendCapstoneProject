@@ -8,39 +8,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
-public class FakeStoreCategoryService implements CategoryService{
+public class FakeStoreCategoryService implements CategoryService {
     RestTemplate restTemplate;
-    @Autowired
+
     FakeStoreCategoryService(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
 
     @Override
-    public Category getSingleCategory(String categoryValue) {
-        return null;
-    }
-
-    @Override
-    public List<Category> getAllCategory(){
-        ResponseEntity<FakeStoreCategoryDto[]> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/categories",FakeStoreCategoryDto[].class);
+    public List<Category> getAllCategory() {
+        ResponseEntity<FakeStoreCategoryDto[]> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products/categories", FakeStoreCategoryDto[].class);
         FakeStoreCategoryDto[] categoryDtoArray = responseEntity.getBody();
 
-        assert categoryDtoArray != null;
-        return convertCategoryDtoArray(categoryDtoArray);
+        if (categoryDtoArray != null) {
+            return convertCategoryDtoArray(categoryDtoArray);
+        } else {
+            return Collections.emptyList(); // or throw an exception, depending on your error handling strategy
+        }
     }
 
-    public List<Category> convertCategoryDtoArray(FakeStoreCategoryDto[] categoryDtos){
+    public List<Category> convertCategoryDtoArray(FakeStoreCategoryDto[] categoryDtos) {
         List<Category> ans = new ArrayList<>();
-        for(FakeStoreCategoryDto categoryDto : categoryDtos){
+        for (FakeStoreCategoryDto categoryDto : categoryDtos) {
             ans.add(convertCategoryDto(categoryDto));
         }
         return ans;
     }
 
-    public Category convertCategoryDto(FakeStoreCategoryDto fakeStoreCategoryDto){
+    public Category convertCategoryDto(FakeStoreCategoryDto fakeStoreCategoryDto) {
         Category category = new Category();
         category.setName(fakeStoreCategoryDto.getName());
         return category;

@@ -1,5 +1,6 @@
 package com.example.backendcapstoneproject.controllers;
 
+import com.example.backendcapstoneproject.dto.FakeStoreProductDto;
 import com.example.backendcapstoneproject.models.Product;
 import com.example.backendcapstoneproject.services.FakeStoreProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,7 @@ public class ProductController {
 
     @GetMapping("/all")
     public List<Product> getAllProducts(){
-        return  new ArrayList<>();
-        //        return fakeStoreProductService.getAllProducts();
+           return fakeStoreProductService.getAllProducts();
     }
 
     @GetMapping("/{id}")
@@ -30,13 +30,25 @@ public class ProductController {
         return fakeStoreProductService.getSingleProduct(id);
     }
 
-    @PostMapping("")
-    public Product addNewProduct(@RequestBody Product product){
-        Product p = new Product();
-        p.setTitle("Ben10Tshirt");
-        p.setId(1L);
-        return p;
+    @GetMapping("/category/{id}")
+    public List<Product> getProductByCategory(@PathVariable("id") String categoryName){
+        return fakeStoreProductService.getByCategory(categoryName);
     }
 
-
+    @PostMapping("/create")
+    public Product addNewProduct(@RequestBody Product product){
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(product.getId());
+        fakeStoreProductDto.setTitle(product.getTitle());
+        fakeStoreProductDto.setCategory(product.getCategory().getName());
+        fakeStoreProductDto.setPrice(product.getPrice());
+        fakeStoreProductDto.setImage(product.getImageUrl());
+        fakeStoreProductDto.setDescription(product.getDescription());
+        return fakeStoreProductService.addNewProduct(fakeStoreProductDto);
+    }
 }
+
+
+
+
+
