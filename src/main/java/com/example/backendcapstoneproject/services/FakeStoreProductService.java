@@ -80,4 +80,8 @@ public class FakeStoreProductService implements ProductService{
         product.setPrice(productDto.getPrice());
         return  product;
     }
+
+    public Product updateProduct(FakeStoreProductDto productDto){
+         return null;
+    }
 }

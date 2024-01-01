@@ -35,8 +35,22 @@ public class ProductController {
         return fakeStoreProductService.getByCategory(categoryName);
     }
 
+    @PutMapping("/update/{id}")
+    public Product updateProduct(@RequestBody Product product, @PathVariable("id") int id){
+        return  null;
+    }
+
     @PostMapping("/create")
     public Product addNewProduct(@RequestBody Product product){
+        return fakeStoreProductService.addNewProduct(convertProductIntoProductDto(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public Product deleteProduct(@PathVariable("id") int id){
+        return null;
+    }
+
+    public FakeStoreProductDto convertProductIntoProductDto(Product product){
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
         fakeStoreProductDto.setId(product.getId());
         fakeStoreProductDto.setTitle(product.getTitle());
@@ -44,7 +58,7 @@ public class ProductController {
         fakeStoreProductDto.setPrice(product.getPrice());
         fakeStoreProductDto.setImage(product.getImageUrl());
         fakeStoreProductDto.setDescription(product.getDescription());
-        return fakeStoreProductService.addNewProduct(fakeStoreProductDto);
+        return fakeStoreProductDto;
     }
 }
 
