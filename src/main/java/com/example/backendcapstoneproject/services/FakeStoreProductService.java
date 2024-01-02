@@ -84,4 +84,10 @@ public class FakeStoreProductService implements ProductService{
     public Product updateProduct(FakeStoreProductDto productDto){
          return null;
     }
+
+    public Product deleteproduct(Long id){
+         Product product = getSingleProduct(id);
+      restTemplate.delete("https://fakestoreapi.com/products/"+id);
+      return product;
+     }
 }

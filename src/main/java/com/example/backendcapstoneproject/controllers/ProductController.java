@@ -46,8 +46,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public Product deleteProduct(@PathVariable("id") int id){
-        return null;
+    public Product deleteProduct(@PathVariable("id") Long id){
+       return fakeStoreProductService.deleteproduct(id);
+
     }
 
     public FakeStoreProductDto convertProductIntoProductDto(Product product){
