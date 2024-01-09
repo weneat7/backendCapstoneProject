@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -31,20 +28,21 @@ public class FakeStoreProductService implements ProductService{
        FakeStoreProductDto productDto =  restTemplate.getForObject(
                                     "https://fakestoreapi.com/products/"+id,
                                             FakeStoreProductDto.class);
-       return convertFakeStoreProduct(productDto);
+       throw new ArithmeticException("Something wrong happened");
+//       return convertFakeStoreProduct(productDto);
     }
 
     public List<Product> getAllProducts(){
         ResponseEntity<FakeStoreProductDto[]> responseEntity = restTemplate.getForEntity("https://fakestoreapi.com/products",FakeStoreProductDto[].class);
         FakeStoreProductDto[] productDtoArray = responseEntity.getBody();
-
-         List<Product> products = new ArrayList<>();
-
-
-        for(FakeStoreProductDto productDto : productDtoArray){
-             products.add(convertFakeStoreProduct(productDto));
-         }
-         return products;
+            throw new  InputMismatchException("Some thing wrong happened");
+//         List<Product> products = new ArrayList<>();
+//
+//
+//        for(FakeStoreProductDto productDto : productDtoArray){
+//             products.add(convertFakeStoreProduct(productDto));
+//         }
+//         return products;
     }
 
     public List<Product> getByCategory(String categoryName){

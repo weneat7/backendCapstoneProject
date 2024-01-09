@@ -4,6 +4,8 @@ import com.example.backendcapstoneproject.dto.FakeStoreProductDto;
 import com.example.backendcapstoneproject.models.Product;
 import com.example.backendcapstoneproject.services.FakeStoreProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class ProductController {
 
     @Autowired
     ProductController(FakeStoreProductService fakeStoreProductService){
+
         this.fakeStoreProductService = fakeStoreProductService;
     }
 
@@ -25,10 +28,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id){
-
-        return fakeStoreProductService.getSingleProduct(id);
-    }
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id){
+            return new ResponseEntity<>(fakeStoreProductService.getSingleProduct(id), HttpStatus.OK);
+        }
 
     @GetMapping("/category/{id}")
     public List<Product> getProductByCategory(@PathVariable("id") String categoryName){
