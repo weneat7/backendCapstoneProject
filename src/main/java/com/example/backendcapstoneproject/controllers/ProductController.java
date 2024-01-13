@@ -3,7 +3,9 @@ package com.example.backendcapstoneproject.controllers;
 import com.example.backendcapstoneproject.dto.FakeStoreProductDto;
 import com.example.backendcapstoneproject.models.Product;
 import com.example.backendcapstoneproject.services.FakeStoreProductService;
+import com.example.backendcapstoneproject.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +16,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    FakeStoreProductService fakeStoreProductService;
+    ProductService productService;
 
     @Autowired
-    ProductController(FakeStoreProductService fakeStoreProductService){
+    ProductController(@Qualifier("SelfProductService")ProductService productService){
 
-        this.fakeStoreProductService = fakeStoreProductService;
+        this.productService = productService;
     }
 
     @GetMapping("/all")
     public List<Product> getAllProducts(){
-           return fakeStoreProductService.getAllProducts();
+           return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id){
-            return new ResponseEntity<>(fakeStoreProductService.getSingleProduct(id), HttpStatus.OK);
+            return new ResponseEntity<>(productService.getSingleProduct(id), HttpStatus.OK);
         }
 
     @GetMapping("/category/{id}")
     public List<Product> getProductByCategory(@PathVariable("id") String categoryName){
-        return fakeStoreProductService.getByCategory(categoryName);
+        return productService.getByCategory(categoryName);
     }
 
     @PutMapping("/update/{id}")
@@ -44,12 +46,12 @@ public class ProductController {
 
     @PostMapping("/create")
     public Product addNewProduct(@RequestBody Product product){
-        return fakeStoreProductService.addNewProduct(convertProductIntoProductDto(product));
+        return productService.addNewProduct(convertProductIntoProductDto(product));
     }
 
     @DeleteMapping("/{id}")
     public Product deleteProduct(@PathVariable("id") Long id){
-       return fakeStoreProductService.deleteproduct(id);
+       return productService.deleteproduct(id);
 
     }
 
