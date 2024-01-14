@@ -1,30 +1,36 @@
 package com.example.backendcapstoneproject.services;
 
-import com.example.backendcapstoneproject.controllers.CategoryController;
-import com.example.backendcapstoneproject.dto.FakeStoreProductDto;
+import com.example.backendcapstoneproject.exceptions.ProductNotExistException;
+import com.example.backendcapstoneproject.models.Category;
 import com.example.backendcapstoneproject.models.Product;
+import com.example.backendcapstoneproject.repositories.CategoryRepository;
+import com.example.backendcapstoneproject.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("SelfProductService")
 public class SelfProductService implements ProductService{
 
-    RestTemplate restTemplate;
-    CategoryService categoryService;
+
+    private ProductRepository productRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    SelfProductService(RestTemplate restTemplate, CategoryService categoryService){
-        this.categoryService = categoryService;
-        this.restTemplate = restTemplate;
+    SelfProductService(ProductRepository productRepository, CategoryRepository categoryRepository){
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public Product getSingleProduct(Long id) {
-        return null;
+    public Product getSingleProduct(Long id) throws ProductNotExistException {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isEmpty()) {
+            throw new ProductNotExistException("Product with id: "+id+ ", does not exist");
+        }
+        return optionalProduct.get();
     }
 
     @Override
@@ -33,17 +39,24 @@ public class SelfProductService implements ProductService{
     }
 
     @Override
-    public Product addNewProduct(FakeStoreProductDto productDto) {
-        return null;
+    public Product addNewProduct(Product product) {
+        Category category = product.getCategory();
+
+        {
+            Category savedCategory = categoryRepository.save(category);
+            product.setCategory(savedCategory);
+
+            return productRepository.save(product);
+        }
     }
 
-    @Override
-    public List<Product> getByCategory(String categoryName) {
-        return null;
-    }
+        @Override
+        public List<Product> getByCategory (String categoryName){
+            return productRepository.findByCategory_Name(categoryName);
+        }
 
-    @Override
-    public List<Product> getAllProducts() {
-        return null;
+        @Override
+        public List<Product> getAllProducts () {
+            return productRepository.findAll();
+        }
     }
-}

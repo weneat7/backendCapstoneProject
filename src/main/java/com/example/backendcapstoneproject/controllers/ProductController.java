@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    ProductService productService;
+    private ProductService productService;
+    private RestTemplate restTemplate;
 
     @Autowired
-    ProductController(@Qualifier("SelfProductService")ProductService productService){
+    ProductController(@Qualifier("SelfProductService")ProductService productService,RestTemplate restTemplate){
 
+        this.restTemplate = restTemplate;
         this.productService = productService;
     }
 
@@ -46,7 +49,7 @@ public class ProductController {
 
     @PostMapping("/create")
     public Product addNewProduct(@RequestBody Product product){
-        return productService.addNewProduct(convertProductIntoProductDto(product));
+        return productService.addNewProduct(product);
     }
 
     @DeleteMapping("/{id}")

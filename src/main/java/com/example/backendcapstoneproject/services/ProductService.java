@@ -11,7 +11,7 @@ public interface ProductService{
 
     Product deleteproduct(Long id);
 
-    Product addNewProduct(FakeStoreProductDto productDto);
+    Product addNewProduct(Product product);
 
     List<Product> getByCategory(String categoryName);
 

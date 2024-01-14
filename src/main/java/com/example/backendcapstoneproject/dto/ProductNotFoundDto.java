@@ -7,4 +7,8 @@ import lombok.Setter;
 @Setter
 public class ProductNotFoundDto {
     private String message;
+
+    public ProductNotFoundDto(String productDoesNotExist) {
+        this.message = productDoesNotExist;
+    }
 }
