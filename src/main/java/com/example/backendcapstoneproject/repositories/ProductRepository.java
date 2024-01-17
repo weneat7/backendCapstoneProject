@@ -21,6 +21,12 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Product save(Product product);
 
 
+    @Query("select p from products p where id= :52")
+    public Product something();
+
+    List<Product> findByCategory_Id(Long id);
+
+    List<Product> saveAll(List<Product> products);
 
 
 }
