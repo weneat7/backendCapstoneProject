@@ -26,11 +26,12 @@ public class SelfProductService implements ProductService{
 
     @Override
     public Product getSingleProduct(Long id) throws ProductNotExistException {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if(optionalProduct.isEmpty()) {
-            throw new ProductNotExistException("Product with id: "+id+ ", does not exist");
-        }
-        return optionalProduct.get();
+//        Optional<Product> optionalProduct = productRepository.findById(id);
+//        if(optionalProduct.isEmpty()) {
+//            throw new ProductNotExistException("Product with id: "+id+ ", does not exist");
+//        }
+//        return optionalProduct.get();
+        return  productRepository.findProductById(id);
     }
 
     @Override
@@ -42,12 +43,12 @@ public class SelfProductService implements ProductService{
     public Product addNewProduct(Product product) {
         Category category = product.getCategory();
 
+        if(category.getId() == null)
         {
             Category savedCategory = categoryRepository.save(category);
             product.setCategory(savedCategory);
-
-            return productRepository.save(product);
         }
+        return productRepository.save(product);
     }
 
         @Override
